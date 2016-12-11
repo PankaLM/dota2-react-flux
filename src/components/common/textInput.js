@@ -8,7 +8,6 @@ var Input = React.createClass({
     label: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
     placeholder: React.PropTypes.string,
-    value: React.PropTypes.string,
     error: React.PropTypes.string
   },
 
@@ -17,7 +16,7 @@ var Input = React.createClass({
     if (this.props.error && this.props.error.length > 0) {
       wrapperClass += " " + 'has-error';
     }
-    
+
     return (
      <div className={wrapperClass}>
         <label htmlFor={this.props.name}>{this.props.label}</label>
@@ -26,8 +25,6 @@ var Input = React.createClass({
             name={this.props.name}
             className="form-control"
             placeholder={this.props.placeholder}
-            ref={this.props.name}
-            value={this.props.value}
             onChange={this.props.onChange} />
           <div className="input">{this.props.error}</div>
         </div>

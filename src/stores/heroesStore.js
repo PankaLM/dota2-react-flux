@@ -7,9 +7,11 @@ var assign = require('object-assign');
 var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 
-var _heroes = [];
-
-var HeroStore = assign({}, EventEmitter.prototype, {
+var _filteredHeroesData = {
+	heroes: [],
+	filter: ''
+};
+var HeroesStore = assign({}, EventEmitter.prototype, {
 	addChangeListener: function(callback) {
 		this.on(CHANGE_EVENT, callback);
 	},
@@ -22,25 +24,28 @@ var HeroStore = assign({}, EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT);
 	},
 
-	getAllHeroes: function(filter) {
-		if(filter) {
-			return _.filter(_heroes, function (hero) {
-				return hero.indexOf(filter) >= 0;
-			});
-		} else {
-			return _heroes;
-		}
+	getHeroes: function() {
+		return _filteredHeroesData.heroes;
+	},
+
+	getFilteredHeroesData: function () {
+		return _filteredHeroesData;
 	}
 });
 
 Dispatcher.register(function(action) {
 	switch(action.actionType) {
 		case ActionTypes.INITIALIZE:
-			_heroes = action.initialData.heroes;
-			HeroStore.emitChange();
-			break;
+				_filteredHeroesData.heroes = action.initialData.heroes;
+				HeroesStore.emitChange();
+				break;
+		case ActionTypes.FILTER_HEROES:
+				_filteredHeroesData.heroes = action.payload.heroes;
+				_filteredHeroesData.filter = action.payload.filter;
+				HeroesStore.emitChange();
+				break;
 		default:
 	}
 });
 
-module.exports = HeroStore;
+module.exports = HeroesStore;

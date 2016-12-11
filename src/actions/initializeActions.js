@@ -9,7 +9,7 @@ var InitializeActions = {
 		Dispatcher.dispatch({
 			actionType: ActionTypes.INITIALIZE,
 			initialData: {
-				heroes: HeroesApi.getAllHeroes()
+				heroes: HeroesApi.getHeroes()
 			}
 		});
 	}

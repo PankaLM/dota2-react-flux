@@ -9,12 +9,11 @@ var HeroesApi = require('../api/heroesApi');
 
 var CHANGE_EVENT = 'change';
 
-var _comparisons = {
-  heroes: [],
-  results: []
+var _selection = {
+  heroes: []
 };
 
-var ComparisonStore = assign({}, EventEmitter.prototype, {
+var SelectionStore = assign({}, EventEmitter.prototype, {
 	addChangeListener: function(callback) {
 		this.on(CHANGE_EVENT, callback);
 	},
@@ -27,23 +26,23 @@ var ComparisonStore = assign({}, EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT);
 	},
 
-	getComparisons: function() {
-		return _comparisons;
+	getSelection: function() {
+		return _selection;
 	}
 });
 
 Dispatcher.register(function(action) {
 	switch(action.actionType) {
-		case ActionTypes.ADD_HERO_FOR_COMPARISON:
-			_comparisons.heroes.push(action.hero);
-			ComparisonStore.emitChange();
+		case ActionTypes.SELECT_HERO:
+			_selection.heroes.push(action.hero);
+			SelectionStore.emitChange();
 			break;
-    case ActionTypes.COMPARE_HEROES:
-      _comparisons.results = action.results;
-      ComparisonStore.emitChange();
+    case ActionTypes.RESET_SELECTION:
+      _selection.heroes = [];
+      SelectionStore.emitChange();
       break;
     default:
 	}
 });
 
-module.exports = ComparisonStore;
+module.exports = SelectionStore;

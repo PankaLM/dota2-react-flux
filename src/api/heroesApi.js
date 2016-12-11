@@ -8,25 +8,15 @@ var _clone = function(item) {
 };
 
 var HeroesApi = {
-	getAllHeroes: function() {
-		return _.keys(heroes);
-	},
-	getHeroesComparisonResults: function (heroesToCompare) {
-		var result = [];
-		_.each(heroesToCompare, function (heroToCompare){
-			var heroResult = 0;
-			var currentHeroData = heroes[heroToCompare];
-			_.each(heroesToCompare, function(name) {
-				if(name !== heroToCompare) {
-					var value = _.filter(currentHeroData, function(data){
-						return !!data[name];
-					});
-					heroResult += value[0][name];
-				}
+	getHeroes: function(filter) {
+		var allHeroes = _.keys(heroes);
+		if(filter) {
+			return _.filter(allHeroes, function (heroName) {
+				return heroName.indexOf(filter) >= 0;
 			});
-			result.push({hero: heroToCompare, result: heroResult});
-		});
-		return result;
+		} else {
+			return allHeroes;
+		}
 	}
 };
 
